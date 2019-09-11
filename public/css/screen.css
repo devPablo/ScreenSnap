@@ -1,0 +1,88 @@
+html, body{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	cursor: crosshair;
+	font-family: 'Roboto', sans-serif;
+}
+
+html {
+	background: url('../img/MacOS\ Mojave\ Day.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+
+#top {
+	/* background-color: blue; */
+	width: 100%;
+	height: 100%;
+}
+
+#right {
+	/* background-color: red; */
+	right: 0;
+}
+
+#bottom {
+	/* background-color: green; */
+	bottom: 0;
+	width: 100%;
+}
+
+#left {
+	/* background-color: yellow; */
+	left: 0;
+}
+
+.dark {
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.prnt__fixed {
+	position: fixed;
+}
+
+#screen {
+	/* box-sizing: content-box; */
+	position: fixed;
+	z-index: 1000;
+}
+
+.screentype__dark {
+	background-color: transparent;
+	border: 1px dashed #F9F9F9;
+}
+
+.screentype__light {
+	/* background-color: rgba(145, 145, 145, 0.2); */
+	background: rgba(100,100,100,0.3);
+	border: 1px solid rgb(173, 173, 173);
+}
+
+
+
+#res {
+	background-color: #F9F9F9;
+	border-radius: 3px;
+	box-shadow: 0 0 6px 0 rgba(30,45,62,.09);
+	text-align: center;
+	position: fixed;
+	z-index: 1000;
+	display: flex;
+	padding: 0 2px;
+}
+
+#res p {
+	margin: 3px;
+	color: #222;
+	font-size: 16px;
+	letter-spacing: 0.6px;
+	font-weight: 400;
+}
+
+#res p::selection {
+	background-color: transparent;
+}

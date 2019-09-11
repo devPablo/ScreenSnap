@@ -1,0 +1,86 @@
+/* Menu Display */
+
+#menu {
+	/* background-color: #F9F9F9; */
+    /* background: linear-gradient(#F9F9F9, #F1F4F5); */
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.6);  
+	border-radius: 3px;
+	box-shadow: 0 0 6px 0 rgba(30,45,62,.09);
+	padding: 2px 8px;
+	display: flex;
+	transform: translateX(-100%);
+	font-size: 16px;
+	justify-content: center;
+	z-index: 1000;
+	position: fixed;
+	cursor: default;
+}
+
+#menu::selection {
+	background-color: transparent;
+}
+
+#menu span:hover {
+	color: #2684FF;
+}
+
+#menu span::selection {
+	background-color: transparent;
+}
+
+
+
+
+/* Menu Items */
+.menu__item {
+	font-size: 1.5rem;
+}
+
+.menu__item img {
+	width: 35px;
+	height: 35px;
+	margin: 0 5px;
+}
+
+.menu__item img::selection {
+	background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Tmp Menu */
+
+/* #tmp_menu {
+    background-color: rgba(248, 248, 248, 0.9);
+    width: auto;
+	border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    padding: 2px 8px;
+    display: flex;
+	font-size: 16px;
+	z-index: 1000;
+	cursor: default;
+}
+
+#tmp_menu .menu__item img {
+	width: 50px;
+	height: 50px;
+	margin: 0 5px;
+}
+
+#test {
+    position: fixed;
+    bottom: 65;
+    display: flex;
+    justify-content: center;
+} */
