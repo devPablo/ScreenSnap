@@ -9,9 +9,12 @@ const BrowserWindow = electron.BrowserWindow;
 const Tray = electron.Tray;
 const globalShortcut = electron.globalShortcut;
 
+const ipc = electron.ipcMain;
+const dialog = electron.dialog;
+
 // Enforce scale factor
-app.commandLine.appendSwitch('high-dpi-support', 1)
-app.commandLine.appendSwitch('force-device-scale-factor', 1)
+app.commandLine.appendSwitch('high-dpi-support', 1);
+app.commandLine.appendSwitch('force-device-scale-factor', 1);
 
 class PrintScreen {
     constructor() {
@@ -25,7 +28,8 @@ class PrintScreen {
             frame: false,
             show: true,
             transparent: true,
-            resizable: false
+            resizable: false,
+            webPreferences: { nodeIntegration: true }
         });
 
         this.mainWindow.setSize(this.width+15, this.height+15);
@@ -36,8 +40,12 @@ class PrintScreen {
             pathname: path.join(__dirname, 'index.html'),
             protocol: 'file:',
             slashes: true,
-        }))
+        }));
     }
 }
+
+ipc.on('minimize-window', function(event) {
+    dialog.showErrorBox('An error message', 'Body of the error message.');
+});
 
 app.on('ready', () => global.PrintScreen = new PrintScreen());
