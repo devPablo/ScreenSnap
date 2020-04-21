@@ -8,7 +8,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Tray = electron.Tray;
 const globalShortcut = electron.globalShortcut;
-const {desktopCapturer, shell} = require('electron')
+const { desktopCapturer, shell } = require('electron')
 
 const ipc = electron.ipcMain;
 const dialog = electron.dialog;
@@ -23,6 +23,7 @@ class PrintScreen {
         this.height = electron.screen.getPrimaryDisplay().bounds.height;
 
         this.mainWindow = new BrowserWindow({
+            title: 'f3380d92-3c2e-4f18-a9eb-32c715e7f321',
             x: -10,
             y: -10,
             alwaysOnTop: true,
@@ -37,6 +38,10 @@ class PrintScreen {
 
         globalShortcut.register('Escape', () => app.exit());
 
+        this.mainWindow.on('page-title-updated', e => {
+            e.preventDefault()
+        });
+
         this.mainWindow.loadURL(url.format({
             pathname: path.join(__dirname, 'index.html'),
             protocol: 'file:',
@@ -46,3 +51,7 @@ class PrintScreen {
 }
 
 app.on('ready', () => global.PrintScreen = new PrintScreen());
+
+ipc.on('quit', e => {
+    app.quit();
+});

@@ -2,6 +2,8 @@ const electron = require('electron');
 const { desktopCapturer, shell } = require('electron');
 const { screen } = require('electron').remote;
 
+const ipc = electron.ipcRenderer;
+
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -10,10 +12,21 @@ const screenSize = getScreenSize();
 const options = { types: ['window', 'screen'], thumbnailSize: screenSize };
 
 document.querySelector('#o1').addEventListener('click', e => {
+    document.body.childNodes.forEach(e => {
+        if (e.nodeType != 3) {
+            if (e.nodeName != 'undefined') {
+                if (e.nodeName != 'SCRIPT' || e.nodeName != '#text') {
+                    e.style.display = 'none';
+                }
+            }
+        }
+        
+    });
     desktopCapturer.getSources(options).then(async sources => {
         for (const source of sources) {
             console.log(source.name);
             if (source.name === 'Entire screen' || source.name === 'Screen 1') {
+                
                 const screenshotPath = path.join(os.tmpdir(), 'screenshot.png')
 
                 fs.writeFile(screenshotPath, source.thumbnail.toPNG(), (error) => {
@@ -21,6 +34,7 @@ document.querySelector('#o1').addEventListener('click', e => {
                     shell.openExternal(`file://${screenshotPath}`)
 
                     console.log(`Saved screenshot to: ${screenshotPath}`);
+                    ipc.send('quit');
                 })
             }
         }

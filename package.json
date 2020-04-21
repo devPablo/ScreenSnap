@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/devPablo/ScreenSnap#readme",
   "dependencies": {
-    "electron": "^6.0.8"
+    "electron": "^6.0.8",
+    "jimp": "^0.10.3"
   }
 }
