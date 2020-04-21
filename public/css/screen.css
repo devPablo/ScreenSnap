@@ -8,7 +8,7 @@ html, body{
 }
 
 html {
-	background: url('../img/MacOS\ Mojave\ Day.jpg');
+	/*background: url('../img/MacOS\ Mojave\ Day.jpg');*/
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;

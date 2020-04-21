@@ -1,6 +1,6 @@
 // Screen
-let screen = document.querySelector('#screen');
-screen.style.display = 'none';
+let screenDiv = document.querySelector('#screen');
+screenDiv.style.display = 'none';
 
 // Menu
 let menu = document.querySelector('#menu');
@@ -26,7 +26,7 @@ menu.addEventListener('mouseleave', mouseLeaveEvent);
 menu.addEventListener('mousedown', mouseDownEventMenu);
 
 // Cancel drag event
-screen.ondragstart = () => { return false; }
+screenDiv.ondragstart = () => { return false; }
 menu.ondragstart = () => { return false; }
 divTop.ondragstart = () => { return false; }
 divRight.ondragstart = () => { return false; }
@@ -58,7 +58,7 @@ function mouseDownEvent(event) {
 		isMenuGlitch = false;
 	}
 	if (!inMenu) {
-		screen.removeAttribute('style');
+		screenDiv.removeAttribute('style');
 		menu.style.display = 'none';
 	
 		selection = true;
@@ -77,25 +77,25 @@ function mouseDownEvent(event) {
 		divRight.style.width = event.x;
 		divRight.style.height = 0;
 	
-		screen.style.top = event.y;
-		screen.style.left = event.x;
+		screenDiv.style.top = event.y;
+		screenDiv.style.left = event.x;
 	}
 }
 
 // Mouse up event
 function mouseUpEvent(event) {
 	if (!inMenu && !isMenuGlitch) {
-		if (screen.style.width == 0 || screen.style.height == 0) {
-			screen.style.display = 'none';
+		if (screenDiv.style.width == 0 || screenDiv.style.height == 0) {
+			screenDiv.style.display = 'none';
 			menu.style.display = 'none';
 			res.style.display = 'none';
 		} else {
-			savedScreen.x = Number.parseInt(screen.style.left);
-			savedScreen.y = Number.parseInt(screen.style.top);
+			savedScreen.x = Number.parseInt(screenDiv.style.left);
+			savedScreen.y = Number.parseInt(screenDiv.style.top);
 			savedScreen.ex = event.x;
 			savedScreen.ey = event.y;
-			savedScreen.width = Number.parseInt(screen.style.width);
-			savedScreen.height = Number.parseInt(screen.style.height);
+			savedScreen.width = Number.parseInt(screenDiv.style.width);
+			savedScreen.height = Number.parseInt(screenDiv.style.height);
 	
 			// Menu
 			setMenuPosition(event);		
@@ -104,7 +104,7 @@ function mouseUpEvent(event) {
 			// displayDraggable(event.x, event.y, 0, 0, 'nw-resize');
 
 			// Display Draggable
-			// displayDraggable(screen.style.left, screen.style.top, 0, 0, 'nw-resize');
+			// displayDraggable(screenDiv.style.left, screenDiv.style.top, 0, 0, 'nw-resize');
 		}
 		selection = false;
 	}
@@ -126,16 +126,16 @@ function mouseMoveEvent(event) {
 				divLeft.style.width = pos.x;
 				
 				// Screen
-				screen.style.left = pos.x; 
-				screen.style.width = Math.abs(pos.x - event.x+2);
+				screenDiv.style.left = pos.x; 
+				screenDiv.style.width = Math.abs(pos.x - event.x+2);
 			} else { // Drag left
 				divLeft.style.width = event.x;
 				let rightWidth = window.innerWidth - pos.x;
 				divRight.style.width = rightWidth-2;
 	
 				// Screen
-				screen.style.left = event.x; 
-				screen.style.width = Math.abs(pos.x - event.x);
+				screenDiv.style.left = event.x; 
+				screenDiv.style.width = Math.abs(pos.x - event.x);
 			}
 			
 			// Top/Bottom height
@@ -155,8 +155,8 @@ function mouseMoveEvent(event) {
 				divRight.style.top = pos.y;
 	
 				// Screen
-				screen.style.top = pos.y; 
-				screen.style.height = Math.abs(pos.y - event.y+2);		
+				screenDiv.style.top = pos.y; 
+				screenDiv.style.height = Math.abs(pos.y - event.y+2);		
 				
 				// Resolution
 				if (event.x > pos.x) { // Right
@@ -192,8 +192,8 @@ function mouseMoveEvent(event) {
 				divRight.style.top = event.y;
 	
 				// Screen
-				screen.style.top = event.y; 
-				screen.style.height = Math.abs(pos.y - event.y);
+				screenDiv.style.top = event.y; 
+				screenDiv.style.height = Math.abs(pos.y - event.y);
 	
 				// Resolution
 				if (event.x > pos.x) { // Right

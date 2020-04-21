@@ -3,9 +3,9 @@ if (settings.screenType == 'dark') {
     divRight.classList.add('dark');
     divBottom.classList.add('dark');
     divLeft.classList.add('dark');
-    screen.classList.add('screentype__dark');
+    screenDiv.classList.add('screentype__dark');
 }
 
 if (settings.screenType == 'light') {
-    screen.classList.add('screentype__light');
+    screenDiv.classList.add('screentype__light');
 }

@@ -8,6 +8,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Tray = electron.Tray;
 const globalShortcut = electron.globalShortcut;
+const {desktopCapturer, shell} = require('electron')
 
 const ipc = electron.ipcMain;
 const dialog = electron.dialog;
@@ -32,7 +33,7 @@ class PrintScreen {
             webPreferences: { nodeIntegration: true }
         });
 
-        this.mainWindow.setSize(this.width+15, this.height+15);
+        this.mainWindow.setSize(this.width + 15, this.height + 15);
 
         globalShortcut.register('Escape', () => app.exit());
 
@@ -43,9 +44,5 @@ class PrintScreen {
         }));
     }
 }
-
-ipc.on('minimize-window', function(event) {
-    dialog.showErrorBox('An error message', 'Body of the error message.');
-});
 
 app.on('ready', () => global.PrintScreen = new PrintScreen());
