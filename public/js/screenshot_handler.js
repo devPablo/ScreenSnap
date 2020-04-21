@@ -1,6 +1,7 @@
 const electron = require('electron');
 const { desktopCapturer, shell } = require('electron');
 const { screen } = require('electron').remote;
+const Jimp = require('Jimp');
 
 const ipc = electron.ipcRenderer;
 
@@ -20,21 +21,26 @@ document.querySelector('#o1').addEventListener('click', e => {
                 }
             }
         }
-        
+
     });
     desktopCapturer.getSources(options).then(async sources => {
         for (const source of sources) {
             console.log(source.name);
             if (source.name === 'Entire screen' || source.name === 'Screen 1') {
-                
+
                 const screenshotPath = path.join(os.tmpdir(), 'screenshot.png')
 
                 fs.writeFile(screenshotPath, source.thumbnail.toPNG(), (error) => {
                     if (error) return console.log(error)
-                    shell.openExternal(`file://${screenshotPath}`)
 
-                    console.log(`Saved screenshot to: ${screenshotPath}`);
-                    ipc.send('quit');
+                    Jimp.read(screenshotPath, (err, image) => {
+                        if (err) throw err;
+                        image
+                            .crop(savedScreen.x - 10, savedScreen.y - 10, savedScreen.width, savedScreen.height)
+                            .writeAsync('screenshot.png').finally(() => {
+                                ipc.send('quit');
+                            });
+                    });
                 })
             }
         }

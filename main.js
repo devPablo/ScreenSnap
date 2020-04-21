@@ -41,6 +41,10 @@ class PrintScreen {
         this.mainWindow.on('page-title-updated', e => {
             e.preventDefault()
         });
+        
+        ipc.on('quit', e => {
+            this.mainWindow.destroy();
+        });
 
         this.mainWindow.loadURL(url.format({
             pathname: path.join(__dirname, 'index.html'),
@@ -50,8 +54,9 @@ class PrintScreen {
     }
 }
 
-app.on('ready', () => global.PrintScreen = new PrintScreen());
-
-ipc.on('quit', e => {
-    app.quit();
+app.on('ready', () => {
+    globalShortcut.register('Control+PrintScreen', () => {
+        global.PrintScreen = new PrintScreen();
+    })
 });
+
