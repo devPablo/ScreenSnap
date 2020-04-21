@@ -28,7 +28,7 @@ document.querySelector('#o1').addEventListener('click', e => {
         for (const source of sources) {
             if (source.name === 'Entire screen' || source.name === 'Screen 1') {
 
-                const screenshotPath = path.join(os.tmpdir(), 'screenshot.png')
+                const screenshotPath = 'screenshot.png'
 
                 fs.writeFile(screenshotPath, source.thumbnail.toPNG(), (error) => {
                     if (error) return console.log(error)

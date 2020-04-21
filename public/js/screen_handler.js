@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 // Cancel screenshot
 document.body.addEventListener('keydown', e => {
 	if (e.key = 'Escape') {
-		remote.getCurrentWindow().destroy();
+		remote.getCurrentWindow().hide();
 	}
 });
 
