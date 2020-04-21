@@ -36,14 +36,16 @@ class PrintScreen {
 
         this.mainWindow.setSize(this.width + 15, this.height + 15);
 
-        globalShortcut.register('Escape', () => app.exit());
-
         this.mainWindow.on('page-title-updated', e => {
-            e.preventDefault()
+            e.preventDefault();
         });
         
         ipc.on('quit', e => {
             this.mainWindow.destroy();
+        });
+
+        ipc.on('hide', e => {
+            this.mainWindow.hide();
         });
 
         this.mainWindow.loadURL(url.format({
@@ -59,4 +61,9 @@ app.on('ready', () => {
         global.PrintScreen = new PrintScreen();
     })
 });
+
+app.on('window-all-closed', e => {
+    e.preventDefault();
+})
+
 

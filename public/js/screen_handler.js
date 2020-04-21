@@ -1,3 +1,12 @@
+const remote = require('electron').remote;
+
+// Cancel screenshot
+document.body.addEventListener('keydown', e => {
+	if (e.key = 'Escape') {
+		remote.getCurrentWindow().destroy();
+	}
+});
+
 // Screen
 let screenDiv = document.querySelector('#screen');
 screenDiv.style.display = 'none';

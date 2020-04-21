@@ -13,6 +13,7 @@ const screenSize = getScreenSize();
 const options = { types: ['window', 'screen'], thumbnailSize: screenSize };
 
 document.querySelector('#o1').addEventListener('click', e => {
+    ipc.send('hide');
     document.body.childNodes.forEach(e => {
         if (e.nodeType != 3) {
             if (e.nodeName != 'undefined') {
@@ -25,7 +26,6 @@ document.querySelector('#o1').addEventListener('click', e => {
     });
     desktopCapturer.getSources(options).then(async sources => {
         for (const source of sources) {
-            console.log(source.name);
             if (source.name === 'Entire screen' || source.name === 'Screen 1') {
 
                 const screenshotPath = path.join(os.tmpdir(), 'screenshot.png')
@@ -38,7 +38,7 @@ document.querySelector('#o1').addEventListener('click', e => {
                         image
                             .crop(savedScreen.x - 10, savedScreen.y - 10, savedScreen.width, savedScreen.height)
                             .writeAsync('screenshot.png').finally(() => {
-                                ipc.send('quit');
+                                // Notification
                             });
                     });
                 })
