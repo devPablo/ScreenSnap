@@ -7,6 +7,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Tray = electron.Tray;
+const Menu = electron.Menu;
 const globalShortcut = electron.globalShortcut;
 
 const ipc = electron.ipcMain;
@@ -20,6 +21,9 @@ app.on('ready', () => {
   globalShortcut.register('Control+PrintScreen', () => {
     new PrintScreen();
   })
+
+  tray = new Tray(__dirname + '/public/img/tray_icon.png');
+  tray.setToolTip('ScreenSnap');
 });
 
 app.on('window-all-closed', e => {
@@ -56,6 +60,14 @@ class PrintScreen {
 
     ipc.on('hide', e => {
       this.mainWindow.hide();
+    });
+
+    ipc.on('minimize', () => {
+      this.mainWindow.minimize();
+    });
+
+    ipc.on('maximize', () => {
+      this.mainWindow.maximize();
     });
 
     this.mainWindow.loadURL(url.format({

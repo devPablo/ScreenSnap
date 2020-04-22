@@ -10,6 +10,7 @@ const screenSize = getScreenSize();
 const options = { types: ['window', 'screen'], thumbnailSize: screenSize };
 
 document.querySelector('#o1').addEventListener('click', e => {
+    ipc.send('hide');
     document.body.style.cursor = 'default';
     document.body.childNodes.forEach(e => {
         if (e.nodeType != 3) {
@@ -27,7 +28,6 @@ document.querySelector('#o1').addEventListener('click', e => {
 
                 const screenshotPath = 'screenshot.png'
 
-                ipc.send('hide');
                 fs.writeFile(screenshotPath, source.thumbnail.toPNG(), (error) => {
                     if (error) return console.log(error)
 
@@ -36,7 +36,7 @@ document.querySelector('#o1').addEventListener('click', e => {
                         image
                             .crop(savedScreen.x - 10, savedScreen.y - 10, savedScreen.width, savedScreen.height)
                             .writeAsync('screenshot.png').finally(() => {
-                                console.log('Done');
+                                displayNotification(screenshotPath);
                             });
                     });
                 })
