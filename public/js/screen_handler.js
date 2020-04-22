@@ -1,9 +1,11 @@
-const remote = require('electron').remote;
+let electron = require('electron');
+let ipc = electron.ipcRenderer;
+
 
 // Cancel screenshot
 document.body.addEventListener('keydown', e => {
-	if (e.key = 'Escape') {
-		remote.getCurrentWindow().hide();
+	if (e.key == 'Escape') {
+		ipc.send('hide');
 	}
 });
 
@@ -49,7 +51,7 @@ let isMenuGlitch = false;
 
 let pos = {
 	x: 0,
-	y: 0 
+	y: 0
 };
 
 let savedScreen = {
@@ -69,23 +71,23 @@ function mouseDownEvent(event) {
 	if (!inMenu) {
 		screenDiv.removeAttribute('style');
 		menu.style.display = 'none';
-	
+
 		selection = true;
 		pos.x = event.x;
 		pos.y = event.y;
-	
+
 		divTop.style.height = event.y;
-	
+
 		divBottom.style.height = window.innerHeight - event.y;
-	
+
 		divLeft.style.top = event.y;
 		divLeft.style.width = event.x;
 		divLeft.style.height = 0;
-	
+
 		divRight.style.top = event.y;
 		divRight.style.width = event.x;
 		divRight.style.height = 0;
-	
+
 		screenDiv.style.top = event.y;
 		screenDiv.style.left = event.x;
 	}
@@ -105,10 +107,10 @@ function mouseUpEvent(event) {
 			savedScreen.ey = event.y;
 			savedScreen.width = Number.parseInt(screenDiv.style.width);
 			savedScreen.height = Number.parseInt(screenDiv.style.height);
-	
+
 			// Menu
-			setMenuPosition(event);		
-			
+			setMenuPosition(event);
+
 			// Display Draggable
 			// displayDraggable(event.x, event.y, 0, 0, 'nw-resize');
 
@@ -125,7 +127,7 @@ function mouseMoveEvent(event) {
 		if (!inMenu) {
 			res.style.display = 'flex';
 			resp.innerHTML = Math.abs(pos.x - event.x) + 'x' + Math.abs(pos.y - event.y);
-	
+
 			document.querySelector('#resize').innerHTML = '';
 
 			// Width
@@ -133,40 +135,40 @@ function mouseMoveEvent(event) {
 				let rightWidth = window.innerWidth - event.x;
 				divRight.style.width = rightWidth;
 				divLeft.style.width = pos.x;
-				
+
 				// Screen
-				screenDiv.style.left = pos.x; 
-				screenDiv.style.width = Math.abs(pos.x - event.x+2);
+				screenDiv.style.left = pos.x;
+				screenDiv.style.width = Math.abs(pos.x - event.x + 2);
 			} else { // Drag left
 				divLeft.style.width = event.x;
 				let rightWidth = window.innerWidth - pos.x;
-				divRight.style.width = rightWidth-2;
-	
+				divRight.style.width = rightWidth - 2;
+
 				// Screen
-				screenDiv.style.left = event.x; 
+				screenDiv.style.left = event.x;
 				screenDiv.style.width = Math.abs(pos.x - event.x);
 			}
-			
+
 			// Top/Bottom height
 			if (event.y > pos.y) { // Drag down
-	
+
 				// Top/Bottom height
 				divTop.style.height = pos.y;
 				let bottomHeight = window.innerHeight - event.y;
 				divBottom.style.height = bottomHeight;
-	
+
 				// Side height
 				let sideHeight = event.y - pos.y;
 				divLeft.style.height = sideHeight;
 				divRight.style.height = sideHeight;
-	
+
 				divLeft.style.top = pos.y;
 				divRight.style.top = pos.y;
-	
+
 				// Screen
-				screenDiv.style.top = pos.y; 
-				screenDiv.style.height = Math.abs(pos.y - event.y+2);		
-				
+				screenDiv.style.top = pos.y;
+				screenDiv.style.height = Math.abs(pos.y - event.y + 2);
+
 				// Resolution
 				if (event.x > pos.x) { // Right
 					if (pos.y < 25) {
@@ -186,24 +188,24 @@ function mouseMoveEvent(event) {
 					}
 				}
 			} else { // Drag up
-	
+
 				// Top/Bottom height
 				divTop.style.height = event.y;
 				let bottomHeight = window.innerHeight - pos.y;
-				divBottom.style.height = bottomHeight-2;
-	
+				divBottom.style.height = bottomHeight - 2;
+
 				// Side height
 				let sideHeight = pos.y - event.y;
-				divLeft.style.height = sideHeight+2;
-				divRight.style.height = sideHeight+2;
-	
+				divLeft.style.height = sideHeight + 2;
+				divRight.style.height = sideHeight + 2;
+
 				divLeft.style.top = event.y;
 				divRight.style.top = event.y;
-	
+
 				// Screen
-				screenDiv.style.top = event.y; 
+				screenDiv.style.top = event.y;
 				screenDiv.style.height = Math.abs(pos.y - event.y);
-	
+
 				// Resolution
 				if (event.x > pos.x) { // Right
 					if (event.y < 25) {
@@ -219,11 +221,11 @@ function mouseMoveEvent(event) {
 						res.style.left = event.x + 5;
 					} else {
 						res.style.top = event.y - 27;
-					res.style.left = event.x;
+						res.style.left = event.x;
 					}
 				}
 			}
-		}		
+		}
 	}
 }
 
@@ -245,7 +247,7 @@ function setMenuPosition(event) {
 
 	if (event.y > pos.y) { // Down
 		if (event.x > pos.x) { // Right
-			if (window.innerHeight-event.y < 25) {
+			if (window.innerHeight - event.y < 25) {
 				menu.style.top = savedScreen.y - 27;
 				menu.style.left = savedScreen.ex;
 			} else {
@@ -253,7 +255,7 @@ function setMenuPosition(event) {
 				menu.style.left = savedScreen.ex;
 			}
 		} else { // Left
-			if (window.innerHeight-event.y < 25) {
+			if (window.innerHeight - event.y < 25) {
 				menu.style.top = savedScreen.y - 27;
 				menu.style.left = pos.x + 2.5;
 			} else {
@@ -263,7 +265,7 @@ function setMenuPosition(event) {
 		}
 	} else { // Up
 		if (event.x > pos.x) { // Right
-			if (window.innerHeight-pos.y < 25) {
+			if (window.innerHeight - pos.y < 25) {
 				menu.style.top = event.y - 25;
 				menu.style.left = savedScreen.ex;
 			} else {
@@ -271,11 +273,11 @@ function setMenuPosition(event) {
 				menu.style.left = event.x;
 			}
 		} else { // Left
-			if (window.innerHeight-pos.y < 25) {
+			if (window.innerHeight - pos.y < 25) {
 				menu.style.top = savedScreen.y - 25;
 				menu.style.left = pos.x + 2.5;
 			} else {
-				menu.style.top = pos.y + 5; 
+				menu.style.top = pos.y + 5;
 				menu.style.left = pos.x + 2.5;
 			}
 		}

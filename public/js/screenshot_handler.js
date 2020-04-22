@@ -1,19 +1,16 @@
-const electron = require('electron');
+electron = require('electron');
 const { desktopCapturer, shell } = require('electron');
 const { screen } = require('electron').remote;
 const Jimp = require('Jimp');
 
-const ipc = electron.ipcRenderer;
-
+ipc = electron.ipcRenderer;
 const fs = require('fs');
-const os = require('os');
-const path = require('path');
 
 const screenSize = getScreenSize();
 const options = { types: ['window', 'screen'], thumbnailSize: screenSize };
 
 document.querySelector('#o1').addEventListener('click', e => {
-    ipc.send('hide');
+    document.body.style.cursor = 'default';
     document.body.childNodes.forEach(e => {
         if (e.nodeType != 3) {
             if (e.nodeName != 'undefined') {
@@ -26,10 +23,11 @@ document.querySelector('#o1').addEventListener('click', e => {
     });
     desktopCapturer.getSources(options).then(async sources => {
         for (const source of sources) {
-            if (source.name === 'Entire screen' || source.name === 'Screen 1') {
+            if (source.name.toLowerCase() === 'entire screen' || source.name === 'screen 1') {
 
                 const screenshotPath = 'screenshot.png'
 
+                ipc.send('hide');
                 fs.writeFile(screenshotPath, source.thumbnail.toPNG(), (error) => {
                     if (error) return console.log(error)
 
@@ -38,7 +36,7 @@ document.querySelector('#o1').addEventListener('click', e => {
                         image
                             .crop(savedScreen.x - 10, savedScreen.y - 10, savedScreen.width, savedScreen.height)
                             .writeAsync('screenshot.png').finally(() => {
-                                // Notification
+                                console.log('Done');
                             });
                     });
                 })
