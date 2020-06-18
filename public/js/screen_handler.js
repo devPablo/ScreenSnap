@@ -5,9 +5,21 @@ let ipc = electron.ipcRenderer;
 // Cancel screenshot
 document.body.addEventListener('keydown', e => {
 	if (e.key == 'Escape') {
+		resetUI();
 		ipc.send('hide');
 	}
 });
+
+function resetUI() {
+	let body = document.getElementsByTagName('body')[0];
+	document.getElementById('resp').innerText = '';
+	document.getElementById('res').style.display = 'none';
+	for (let i = 0; i < body.childNodes.length; i++) {
+		if (body.childNodes[i].tagName == 'DIV') {
+			body.childNodes[i].removeAttribute('style');
+		}
+	}
+}
 
 // Screen
 let screenDiv = document.querySelector('#screen');
@@ -126,7 +138,7 @@ function mouseMoveEvent(event) {
 	if (selection) {
 		if (!inMenu) {
 			res.style.display = 'flex';
-			resp.innerHTML = Math.abs(pos.x - event.x) + 'x' + Math.abs(pos.y - event.y);
+			resp.innerText = Math.abs(pos.x - event.x) + 'x' + Math.abs(pos.y - event.y);
 
 			document.querySelector('#resize').innerHTML = '';
 

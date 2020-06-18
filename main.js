@@ -12,14 +12,18 @@ const globalShortcut = electron.globalShortcut;
 
 const ipc = electron.ipcMain;
 
+let ps = null;
+
 // Enforce scale factor
 app.commandLine.appendSwitch('high-dpi-support', 1);
 app.commandLine.appendSwitch('force-device-scale-factor', 1);
+app.commandLine.appendSwitch('--webrtc-max-cpu-consumption-percentage=100');
 
 // App listeners
 app.on('ready', () => {
-  globalShortcut.register('Control+PrintScreen', () => {
-    new PrintScreen();
+  ps = new PrintScreen();
+  globalShortcut.register('PrintScreen', () => {
+    ps.show();
   })
 
   tray = new Tray(__dirname + '/public/img/tray_icon.png');
@@ -35,6 +39,9 @@ class PrintScreen {
   constructor() {
     this.width = electron.screen.getPrimaryDisplay().bounds.width;
     this.height = electron.screen.getPrimaryDisplay().bounds.height;
+    this.show = () => {
+      this.mainWindow.show();
+    }
 
     this.mainWindow = new BrowserWindow({
       title: 'f3380d92-3c2e-4f18-a9eb-32c715e7f321',
@@ -68,6 +75,10 @@ class PrintScreen {
 
     ipc.on('maximize', () => {
       this.mainWindow.maximize();
+    });
+
+    ipc.on('debug', (e, p) => {
+      console.log(p);
     });
 
     this.mainWindow.loadURL(url.format({

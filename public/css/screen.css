@@ -71,7 +71,7 @@ html {
 	text-align: center;
 	position: fixed;
 	z-index: 1000;
-	display: flex;
+	display: none;
 	padding: 0 2px;
 }
 
