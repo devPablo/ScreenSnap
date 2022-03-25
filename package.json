@@ -21,6 +21,6 @@
     "jimp": "^0.10.3"
   },
   "devDependencies": {
-    "electron": "^8.5.2"
+    "electron": "^13.6.6"
   }
 }
